@@ -1,7 +1,7 @@
 PagSeguro.config = {
 	encoding: 'UTF-8',
-	developerMode: function(status){
-		if(status){
+	developerMode(status) {
+		if (status) {
 			this.API_URL += '/pagseguro_developer'
 		}
 	},
@@ -32,25 +32,8 @@ PagSeguro.config = {
 		notifications: '/pagseguro_notifications'
 	},
 
-	callbackUrls: function(urls){
+	callbackUrls(urls) {
 		this.cbUrls = _.extend(this.cbUrls, urls);
-	},
-
-	/**
-	 * Specifies the collection to save purchases.
-	 * @param {Mongo.Collection} collection
-	 */
-	PurchaseCollection: function(collection){
-		PagSeguro.config._purchaseCollection = collection;
-	},
-
-	/**
-	 * Ensure that there is a collection to save purchases.
-	 */
-	ensureCollection: function(){
-		if(!this._purchaseCollection){
-			this.PurchaseCollection(new Mongo.Collection('pagseguroPurchases'));
-		}
 	},
 
 	/**
@@ -63,7 +46,7 @@ PagSeguro.config = {
 	 */
 	
 	_senderHandler: undefined,
-	SenderHandler: function(callback){
+	SenderHandler(callback) {
 		this._senderHandler = callback;
 	},
 
@@ -78,7 +61,7 @@ PagSeguro.config = {
 	 * @param {Function} callback [description]
 	 */
 	_shippingHandler: undefined,
-	ShippingHandler: function(callback){
+	ShippingHandler(callback) {
 		this._shippingHandler = callback;
 	},
 
@@ -92,7 +75,7 @@ PagSeguro.config = {
 	 * Set callbacks to be called when checkout is over
 	 * @param  {Function} callback
 	 */
-	checkoutCallback: function(callback){
+	checkoutCallback(callback) {
 		this._checkoutCallbacks.push(callback);
 	}
 }

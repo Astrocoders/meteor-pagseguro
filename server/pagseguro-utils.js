@@ -1,22 +1,22 @@
 PagSeguroUtils = {
-	serializeItems: function(items){
-		var serialized = {};
+	serializeItems(items) {
+		let serialized = {};
 
-		_.each(items, function(item, i){
+		_.each(items, (item, i) => {
 			i+=1;
 			serialized['itemId' + i] = item._id;
 			serialized['itemDescription' + i] = item.description;
-			serialized['itemAmount' + i] = item.amount * 100;
+			serialized['itemAmount' + i] = (item.amount / 100).toFixed(2);
 			serialized['itemQuantity' + i] = item.quantity;
 			serialized['itemWeight' + i] = item.weight * 1000;
-			serialized['itemShippingCost' + i] = item.shippingCost * 1000;
+			serialized['itemShippingCost' + i] = (item.shippingCost / 100).toFixed(2);
 		});
 
-		return serialized;		
+		return serialized;
 	},
 
-	serializeSender: function(sender){
-		var fields = _.pick(sender, 
+	serializeSender(sender) {
+		let fields = _.pick(sender, 
 			[
 				'senderName', 'senderPhone', 'senderAreaCode', 'senderEmail',
 				'senderCPF', 'senderBornDate'
@@ -26,8 +26,8 @@ PagSeguroUtils = {
 		return fields;
 	},
 
-	serializeAddress: function(address){
-		var fields = _.pick(address, 
+	serializeAddress(address) {
+		let fields = _.pick(address, 
 			[
 			'shippingType', 'shippingAddressStreet', 'shippingAddressNumber', 
 	 		'shippingAddressComplement', 'shippingAddressDistrict', 'shippingAddressPostalCode', 
@@ -43,18 +43,19 @@ PagSeguroUtils = {
 	 * @param  {Object} obj 
 	 * @return {String} 
 	 */
-	parametizer: function(obj){
-		var params = [];
+	parametizer(obj){
+		let params = [];
 
-		_.each(obj, function(value, key){
+		_.each(obj, (value, key) => {
 			params.push(key + '=' + value);
 		});
 
 		return params.join('&');
 	},
 
-	serializeRequest: function(purchase){
-		var request = {}, sets = PagSeguro._settings;
+	serializeRequest(purchase){
+		let request = {};
+    let sets = PagSeguro._settings;
 
 		request = _.extend(request, this.serializeItems(purchase.items))
 		request = _.extend(request, this.serializeSender(purchase.sender))
@@ -68,8 +69,8 @@ PagSeguroUtils = {
 		return request;
 	},
 
-	stringifyRequest: function(purchase){
-		var request = this.serializeRequest(purchase);
+	stringifyRequest(purchase) {
+		let request = this.serializeRequest(purchase);
 		return this.parametizer(request);
 	}
 }

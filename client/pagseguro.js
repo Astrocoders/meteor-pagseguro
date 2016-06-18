@@ -1,8 +1,8 @@
-var CartItems = new Mongo.Collection('cart-items', {connection: null}),
-	CartItemsPersistent = new PersistentMinimongo(CartItems);
+let CartItems = new Mongo.Collection('cart-items', {connection: null});
+let	CartItemsPersistent = new PersistentMinimongo(CartItems);
 
-PagSeguro.API = function(settings){
-	if(!settings || !settings.token || !settings.email ){
+PagSeguro.API = (settings) => {
+	if (!settings || !settings.token || !settings.email) {
 		throw new Error('You must set your token and email');
 	}
 
@@ -18,8 +18,8 @@ PagSeguro.API.prototype = {
 	CartItems: CartItems,
 
 	// { description, amount, quantity, weight }
-	addItem: function(item){
-		if(!item.amount || !item.description){
+	addItem(item) {
+		if (!item.amount || !item.description) {
 			throw new Error('Must have at least amount and description');
 		}
 
@@ -31,32 +31,32 @@ PagSeguro.API.prototype = {
 		return CartItems.insert(item);
 	},
 
-	removeItem: function(id){
+	removeItem(id) {
 		return CartItems.remove(id);
 	},
 
-	removeAllItems: function(){
-		_.each(CartItems.find({}).fetch(), function(item){
+	removeAllItems() {
+		_.each(CartItems.find({}).fetch(), (item) => {
 			CartItems.remove(item._id);
 		})
 	},
 	
-	fetchItems: function(){
-		return CartItems.find({}).fetch();
+	fetchItems() {
+		return CartItems.find().fetch();
 	},
 
-	checkout: function(callback, dontClearCart){
-		if(_.isBoolean(callback)){ 
+	checkout(callback, dontClearCart) {
+		if (_.isBoolean(callback)) {
 			dontClearCart = callback;
 			callback = undefined; 
 		}
 
-		if(!dontClearCart){
+		if (!dontClearCart) {
 			this.removeAllItems();
 		}
 
-		Meteor.call('pagSeguroCheckout', this.fetchItems(), !!callback,function(err, res){
-			if(!callback) window.location = res.paymentUrl;
+		Meteor.call('pagSeguroCheckout', this.fetchItems(), !!callback, (err, res) => {
+			if (!callback) window.location = res.paymentUrl;
 			else callback(err, res);
 		});
 	}
