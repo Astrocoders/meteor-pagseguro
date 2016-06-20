@@ -21,7 +21,6 @@ Package.onUse(function(api) {
   ]);
 
   api.addFiles('lib/pagseguro.js', ['client', 'server']);
-  api.addFiles('server/pagseguro.js', ['server']);
   api.addFiles('server/pagseguro-utils.js', ['server']);
   api.addFiles('server/config.js', ['server']);
 
