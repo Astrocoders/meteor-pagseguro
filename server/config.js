@@ -1,14 +1,9 @@
 PagSeguro.config = {
 	encoding: 'UTF-8',
-	developerMode(status) {
-		if (status) {
-			this.API_URL += '/pagseguro_developer'
-		}
-	},
-
 	API_URL: 'https://ws.pagseguro.uol.com.br/v2/checkout',
 	API_HEADER: 'application/x-www-form-urlencoded; charset=UTF-8',
 	API_PAYMENT_URL: 'https://pagseguro.uol.com.br/v2/checkout/payment.html?code=',
+	API_NOTIFICATION_URL: 'https://ws.pagseguro.uol.com.br/v3/transactions/notifications/',
 	
 	cbUrls: {
 		/**

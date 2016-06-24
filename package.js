@@ -23,11 +23,14 @@ Package.onUse(function(api) {
     'iron:router@1.0.8',
   ], 'server');
 
-  api.addFiles('lib/pagseguro.js', ['client', 'server']);
-  api.addFiles('server/pagseguro-utils.js', ['server']);
-  api.addFiles('server/config.js', ['server']);
-
   api.addFiles('client/pagseguro.js', ['client']);
+  api.addFiles('lib/pagseguro.js', ['client', 'server']);
+  api.addFiles([
+    'server/config.js',
+    'server/pagseguro-utils.js',
+    'server/postback.js'
+  ], ['server']);
+
 
   api.export('PagSeguro', ['client', 'server']);
   api.export('PagSeguroUtils', ['client', 'server']);
