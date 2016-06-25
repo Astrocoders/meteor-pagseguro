@@ -11,30 +11,28 @@ Package.onUse(function(api) {
 
   api.use([
     'ecmascript',
-    'underscore@1.0.3',
-    'mongo@1.1.0',
-    'frozeman:persistent-minimongo@0.1.4',
+    'erasaur:meteor-lodash@3.10.1_1',
+    'mongo',
     'peerlibrary:xml2js@0.4.8_1',
-    'http@1.1.0',
-    'random'
+    'http',
+    'random',
   ]);
   
   api.use([
     'iron:router@1.0.8',
   ], 'server');
 
-  api.addFiles('client/pagseguro.js', ['client']);
-  api.addFiles('lib/pagseguro.js', ['client', 'server']);
+  api.addFiles('lib/pagseguro.js', 'server');
   api.addFiles([
     'server/config.js',
     'server/pagseguro-utils.js',
-    'server/postback.js'
-  ], ['server']);
+    'server/postback.js',
+    'server/checkout.js',
+  ], 'server');
 
 
-  api.export('PagSeguro', ['client', 'server']);
-  api.export('PagSeguroUtils', ['client', 'server']);
-  api.export('CartItems', ['server']);
+  api.export('PagSeguro', 'server');
+  api.export('PagSeguroUtils', 'server');
 });
 
 Package.onTest(function(api) {
