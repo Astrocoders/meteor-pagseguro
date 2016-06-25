@@ -38,13 +38,16 @@ PagSeguro.createPurchase = ({sender, items, shippingAddress}) => {
       return xml2js.parseStringSync(response.content).checkout.code;
     },
 
-    getCheckoutURL({ onError }){
+    getCheckout({ onError }){
       const purchaseAsRequest = this.getRequest(this.getPurchase());
       const checkoutCode = this.getCheckoutCode(purchaseAsRequest, onError);
 
       if(!checkoutCode) return false;
 
-      return `${PagSeguro.config.API_PAYMENT_URL}${checkoutCode}`;
+      return {
+        URL: `${PagSeguro.config.API_PAYMENT_URL}${checkoutCode}`,
+        code: checkoutCode,
+      };
     },
   };
 }
