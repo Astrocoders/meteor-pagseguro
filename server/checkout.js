@@ -19,7 +19,7 @@ PagSeguro.createPurchase = ({sender, items, shippingAddress}) => {
     },
 
     getRequest(purchase:object){
-      PagSeguroUtils.serializeRequest(purchase);
+      return PagSeguroUtils.serializeRequest(purchase);
     },
     
     getCheckoutCode(purchase:object, onError){
