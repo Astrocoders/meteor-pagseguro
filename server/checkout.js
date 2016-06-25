@@ -1,4 +1,4 @@
-PagSeguro.createPurchase = ({sender, items, shippingAddress}) => {
+PagSeguro.createPurchase = ({reference, sender, items, shippingAddress}) => {
   return {
     normalizeAddressObj(shippingAddress){
       const normalizedShippingAddress = _.mapKeys(shippingAddress, (v, key) => `shippingAddress${_.capitalize(key)}`);
@@ -10,7 +10,7 @@ PagSeguro.createPurchase = ({sender, items, shippingAddress}) => {
 
     getPurchase(){
       return {
-        reference: Random.id(),
+        reference: reference || Random.id(),
         items,
         createdAt: new Date(),
         sender: _.mapKeys(sender, (v, key) => `sender${_.capitalize(key)}`),
@@ -35,7 +35,7 @@ PagSeguro.createPurchase = ({sender, items, shippingAddress}) => {
         return false;
       }
 
-      return xml2js.parseStringSync(response.content).checkout.code;
+      return xml2js.parseStringSync(response.content).checkout.code[0];
     },
 
     getCheckout({ onError }){

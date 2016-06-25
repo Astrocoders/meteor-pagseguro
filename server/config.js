@@ -73,4 +73,9 @@ PagSeguro.config = {
 	checkoutCallback(callback) {
 		this._checkoutCallbacks.push(callback);
 	},
-}
+  
+  _notificationHandler: undefined,
+  NotificationHandler(handler) {
+    this._notificationHandler = handler;
+  },
+};
