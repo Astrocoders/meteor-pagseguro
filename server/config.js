@@ -72,5 +72,10 @@ PagSeguro.config = {
 	 */
 	checkoutCallback(callback) {
 		this._checkoutCallbacks.push(callback);
-	}
+	},
+  
+  _checkoutCodeHandler: undefined,
+  CheckoutCodeHandler(handler) {
+    this._checkoutCodeHandler = handler;
+  },
 }
