@@ -1,76 +1,76 @@
 PagSeguroUtils = {
-	serializeItems(items) {
-		let serialized = {};
+  serializeItems(items) {
+    let serialized = {};
 
-		_.each(items, (item, i) => {
-			i+=1;
-			serialized['itemId' + i] = item._id;
-			serialized['itemDescription' + i] = item.description;
-			serialized['itemAmount' + i] = (item.amount / 100).toFixed(2);
-			serialized['itemQuantity' + i] = item.quantity;
-			serialized['itemWeight' + i] = item.weight * 1000;
-			serialized['itemShippingCost' + i] = (item.shippingCost / 100).toFixed(2);
-		});
+    _.each(items, (item, i) => {
+      i+=1;
+      serialized['itemId' + i] = item._id;
+      serialized['itemDescription' + i] = item.description;
+      serialized['itemAmount' + i] = (item.amount / 100).toFixed(2);
+      serialized['itemQuantity' + i] = item.quantity;
+      serialized['itemWeight' + i] = item.weight * 1000;
+      serialized['itemShippingCost' + i] = (item.shippingCost / 100).toFixed(2);
+    });
 
-		return serialized;
-	},
+    return serialized;
+  },
 
-	serializeSender(sender) {
-		let fields = _.pick(sender, 
-			[
-				'senderName', 'senderPhone', 'senderAreaCode', 'senderEmail',
-				'senderCPF', 'senderBornDate'
-			]
-		);
-		
-		return fields;
-	},
+  serializeSender(sender) {
+    let fields = _.pick(sender, 
+      [
+        'senderName', 'senderPhone', 'senderAreaCode', 'senderEmail',
+        'senderCPF', 'senderBornDate'
+      ]
+    );
 
-	serializeAddress(address) {
-		let fields = _.pick(address, 
-			[
-			'shippingType', 'shippingAddressStreet', 'shippingAddressNumber', 
-	 		'shippingAddressComplement', 'shippingAddressDistrict', 'shippingAddressPostalCode', 
-	 		'shippingAddressCity', 'shippingAddressState', 'shippingAddressCountry',
-	 		]
-	 	);
+    return fields;
+  },
 
-		return fields;
-	},
+  serializeAddress(address) {
+    let fields = _.pick(address, 
+      [
+        'shippingType', 'shippingAddressStreet', 'shippingAddressNumber', 
+        'shippingAddressComplement', 'shippingAddressDistrict', 'shippingAddressPostalCode', 
+        'shippingAddressCity', 'shippingAddressState', 'shippingAddressCountry',
+      ]
+    );
 
-	/**
-	 * Parametize an flat object.
-	 * @param  {Object} obj 
-	 * @return {String} 
-	 */
-	parametizer(obj){
-		let params = [];
+    return fields;
+  },
 
-		_.each(obj, (value, key) => {
-			params.push(key + '=' + value);
-		});
+  /**
+   * Parametize an flat object.
+   * @param  {Object} obj 
+   * @return {String} 
+   */
+  parametizer(obj){
+    let params = [];
 
-		return params.join('&');
-	},
+    _.each(obj, (value, key) => {
+      params.push(key + '=' + value);
+    });
 
-	serializeRequest(purchase){
-		let request = {};
+    return params.join('&');
+  },
+
+  serializeRequest(purchase){
+    let request = {};
     let sets = PagSeguro._settings;
 
-		request = _.extend(request, this.serializeItems(purchase.items))
-		request = _.extend(request, this.serializeSender(purchase.sender))
-		request = _.extend(request, this.serializeAddress(purchase.shippingAddress));
+    request = _.extend(request, this.serializeItems(purchase.items))
+    request = _.extend(request, this.serializeSender(purchase.sender))
+    request = _.extend(request, this.serializeAddress(purchase.shippingAddress));
 
-		request.reference = purchase.reference;
-		request.currency = sets.currency;
-		request.email = sets.email;
-		request.token = sets.token;
+    request.reference = purchase.reference;
+    request.currency = sets.currency;
+    request.email = sets.email;
+    request.token = sets.token;
 
-		return request;
-	},
+    return request;
+  },
 
-	stringifyRequest(purchase) {
-		let request = this.serializeRequest(purchase);
-		return this.parametizer(request);
-	}
+  stringifyRequest(purchase) {
+    let request = this.serializeRequest(purchase);
+    return this.parametizer(request);
+  }
 }
