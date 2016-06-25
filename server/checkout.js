@@ -1,7 +1,11 @@
 PagSeguro.createPurchase = ({sender, items, shippingAddress}) => {
   return {
     normalizeAddressObj(shippingAddress){
-      return _.mapKeys(shippingAddress, (v, key) => `shippingAddress${_.capitalize(key)}`);
+      const normalizedShippingAddress = _.mapKeys(shippingAddress, (v, key) => `shippingAddress${_.capitalize(key)}`);
+      return {
+        ...normalizedShippingAddress,
+        shippingType: shippingAddress.type,
+      }
     },
 
     getPurchase(){
