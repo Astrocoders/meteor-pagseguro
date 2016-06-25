@@ -18,9 +18,9 @@ PagSeguro.createPurchase = ({sender, items, shippingAddress}) => {
       PagSeguroUtils.serializeRequest(purchase);
     },
     
-    getCheckoutCode(request:object, onError){
-      const request = HTTP.post(PagSeguro.config.API_URL, {
-        params: request,
+    getCheckoutCode(purchase:object, onError){
+      const response = HTTP.post(PagSeguro.config.API_URL, {
+        params: purchase,
         headers: {
           'Accept-Charset': PagSeguro.config.encoding,
         },
