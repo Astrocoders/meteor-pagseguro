@@ -1,7 +1,7 @@
 let CartItems = new Mongo.Collection('cart-items', {connection: null});
 let	CartItemsPersistent = new PersistentMinimongo(CartItems);
 
-PagSeguro.API = (settings) => {
+PagSeguro.API = settings => {
 	if (!settings || !settings.token || !settings.email) {
 		throw new Error('You must set your token and email');
 	}

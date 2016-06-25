@@ -4,7 +4,7 @@ Meteor.startup(function(){
 
     console.log('[PagSeguro]', 'Recieving a postback');
     console.log('[PagSeguro]', 'And this is the request body', data);
-    
+
     if(data){
       let response = HTTP.get(PagSeguro.config.API_NOTIFICATION_URL + data.notificationCode, {
         params: {
@@ -12,9 +12,9 @@ Meteor.startup(function(){
           token: PagSeguro._settings.token
         }
       });
-      
+
       console.log(response);
-      
+
       if (response.statusCode === 200) {
         let transactionStatus = xml2js.parseStringSync(response.content).transaction.status;
 
