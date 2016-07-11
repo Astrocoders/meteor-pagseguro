@@ -23,7 +23,7 @@ Package.onUse(function(api) {
   ]);
   
   api.use([
-    'meteorhacks:picker@1.0.4',
+    'meteorhacks:picker@1.0.3',
   ], 'server');
 
   api.addFiles('client/pagseguro.js', 'client');
