@@ -7,8 +7,14 @@ Meteor.startup(function() {
   Picker.route(PagSeguro.config.cbUrls.notifications, function(params, req, res, next){
     console.log('[PagSeguro]', 'Receiving a postback');
     console.log('[PagSeguro]', 'And this is the request body', req.body);
+    console.log('[PagSeguro]', 'And this is the whole request', req);
 
     const data = req.body;
+
+    if (req.method === 'GET') {
+      res.end('Aguarde um momento...');
+      return;
+    }
 
     if(!data) {
       res.end();
@@ -31,7 +37,7 @@ Meteor.startup(function() {
       return;
     }
 
-    const { transaction } = xml2js.parseStringSync(response.content); 
+    const { transaction } = xml2js.parseStringSync(response.content);
     PagSeguro.config._notificationHandler(transaction);
   });
 });
