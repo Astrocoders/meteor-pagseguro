@@ -15,12 +15,17 @@ Meteor.startup(function() {
       return;
     }
 
-    const response = HTTP.get(PagSeguro.config.API_NOTIFICATION_URL + data.notificationCode, {
-      params: {
-        email: PagSeguro._settings.email,
-        token: PagSeguro._settings.token,
-      },
-    });
+    let response;
+    try {
+      response = HTTP.get(PagSeguro.config.API_NOTIFICATION_URL + data.notificationCode, {
+        params: {
+          email: PagSeguro._settings.email,
+          token: PagSeguro._settings.token,
+        },
+      });
+    } catch (e) {
+      console.log('[PagSeguro] Postback error', e);
+    }
 
     if (response.statusCode !== 200) {
       return;
