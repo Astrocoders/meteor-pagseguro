@@ -1,63 +1,60 @@
-let CartItems = new Mongo.Collection('cart-items', {connection: null});
-let	CartItemsPersistent = new PersistentMinimongo(CartItems);
+const CartItems = new Mongo.Collection('cart-items', {connection: null});
+const	CartItemsPersistent = new PersistentMinimongo(CartItems);
+
+PagSeguro = (settings) => {
+  return PagSeguro.API(PagSeguro._settings);
+}
 
 PagSeguro.API = settings => {
-	if (!settings || !settings.token || !settings.email) {
+	if (!Meteor.isServer && !settings || !settings.token || !settings.email) {
 		throw new Error('You must set your token and email');
 	}
 
-	this.token = settings.token;
-	this.email = settings.token;
+  return {
+    get token(){ return settings.token },
+    get email(){ return settings.token },
 
-	return this;
-}
+    CartItems: CartItems,
 
-PagSeguro.API.prototype = {
-	constructor: PagSeguro.API,
+    // { description, amount, quantity, weight }
+    addItem(item) {
+      if (!item.amount || !item.description) {
+        throw new Error('Must have at least amount and description');
+      }
 
-	CartItems: CartItems,
+      return CartItems.insert({
+        quantity: 1,
+        weight: 0,
+        ...item,
+      });
+    },
 
-	// { description, amount, quantity, weight }
-	addItem(item) {
-		if (!item.amount || !item.description) {
-			throw new Error('Must have at least amount and description');
-		}
+    removeItem: id => CartItems.remove(id),
 
-		item = _.extend({
-			quantity: 1,
-			weight: 0
-		}, item);
+    removeAllItems() {
+      _.each(CartItems.find({}).fetch(), (item) => {
+        CartItems.remove(item._id);
+      });
+    },
 
-		return CartItems.insert(item);
-	},
+    fetchItems() {
+      return CartItems.find().fetch();
+    },
 
-	removeItem(id) {
-		return CartItems.remove(id);
-	},
+    checkout(callback, dontClearCart) {
+      if (_.isBoolean(callback)) {
+        dontClearCart = callback;
+        callback = undefined; 
+      }
 
-	removeAllItems() {
-		_.each(CartItems.find({}).fetch(), (item) => {
-			CartItems.remove(item._id);
-		})
-	},
-	
-	fetchItems() {
-		return CartItems.find().fetch();
-	},
+      if (!dontClearCart) {
+        this.removeAllItems();
+      }
 
-	checkout(callback, dontClearCart) {
-		if (_.isBoolean(callback)) {
-			dontClearCart = callback;
-			callback = undefined; 
-		}
-
-		if (!dontClearCart) {
-			this.removeAllItems();
-		}
-
-		Meteor.call('pagSeguroCheckout', this.fetchItems(), !!callback, (err, res) => {
-			if (!callback) window.location = res.paymentUrl;
-			else callback(err, res);
-		});
-	}
+      Meteor.call('pagSeguroCheckout', this.fetchItems(), (err, res) => {
+        if (!callback) window.location = res.paymentUrl;
+        else callback(err, res);
+      });
+    }
+  };
 }

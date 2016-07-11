@@ -1,21 +1,23 @@
 PagSeguro.createPurchase = ({reference, sender, items, shippingAddress}) => {
   return {
     normalizeAddressObj(shippingAddress){
+      if(!shippingAddress) return null;
+
       const normalizedShippingAddress = _.mapKeys(shippingAddress, (v, key) => `shippingAddress${_.capitalize(key)}`);
       return {
         ...normalizedShippingAddress,
         shippingType: shippingAddress.type,
-      }
+      };
     },
 
     getPurchase(){
-      return {
+      return _.compact({
         reference: reference || Random.id(),
         items,
         createdAt: new Date(),
         sender: _.mapKeys(sender, (v, key) => `sender${_.capitalize(key)}`),
         shippingAddress: this.normalizeAddressObj(shippingAddress),
-      };
+      });
     },
 
     getRequest(purchase:object){
