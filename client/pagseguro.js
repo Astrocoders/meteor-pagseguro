@@ -1,5 +1,4 @@
 const CartItems = new Mongo.Collection('cart-items', {connection: null});
-const	CartItemsPersistent = new PersistentMinimongo(CartItems);
 
 PagSeguro = (settings) => {
   return PagSeguro.API(PagSeguro._settings);
