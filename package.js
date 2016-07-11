@@ -6,6 +6,10 @@ Package.describe({
   documentation: 'README.md'
 });
 
+Npm.depends({
+  'body-parser': '1.15.2',
+});
+
 Package.onUse(function(api) {
   api.versionsFrom('1.1.0.2');
 
@@ -19,7 +23,7 @@ Package.onUse(function(api) {
   ]);
   
   api.use([
-    'iron:router@1.0.8',
+    'meteorhacks:picker@1.0.4',
   ], 'server');
 
   api.addFiles('client/pagseguro.js', 'client');
