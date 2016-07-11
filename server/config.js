@@ -32,35 +32,6 @@ PagSeguro.config = {
 	},
 
 	/**
-	 * Here you can say how sender data will be defined
-	 * Pay attention that you callback must return an object with at least:
-	 * senderName, senderPhone, senderAreaCode, senderPhone, senderEmail.
-	 * Additional fields you be salved in PurchaseCollection as well.
-	 * Jokes with method's name and Adam Sandler's name won't be tolerated.
-	 * @param {Function} callback
-	 */
-	
-	_senderHandler: undefined,
-	SenderHandler(callback) {
-		this._senderHandler = callback;
-	},
-
-	/**
-	 * Here you can say how shipping address data will be defined
-	 * Pay attention that you callback must return an object with at least:
-	 * shippingType (can be EN [PAC] or SD [Sedex]), shippingAddressStreet, shippingAddressNumber, 
-	 * shippingAddressComplement, shippingAddressDistrict, shippingAddressPostalCode, 
-	 * shippingAddressCity, shippingAddressState, shippingAddressCountry.
-	 * 
-	 * Additional fields you be salved in PurchaseCollection as well.
-	 * @param {Function} callback [description]
-	 */
-	_shippingHandler: undefined,
-	ShippingHandler(callback) {
-		this._shippingHandler = callback;
-	},
-
-	/**
 	 * Holds checkout callbacks
 	 * @type {Array}
 	 */
