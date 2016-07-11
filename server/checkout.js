@@ -11,13 +11,17 @@ PagSeguro.createPurchase = ({reference, sender, items, shippingAddress}) => {
     },
 
     getPurchase(){
-      return _.compact({
+      return {
         reference: reference || Random.id(),
         items,
         createdAt: new Date(),
         sender: _.mapKeys(sender, (v, key) => `sender${_.capitalize(key)}`),
-        shippingAddress: this.normalizeAddressObj(shippingAddress),
-      });
+        ...(
+          _.isEmpty(shippingAddress) ? {} : {
+            shippingAddress: this.normalizeAddressObj(shippingAddress),
+          }
+        ),
+      };
     },
 
     getRequest(purchase:object){
