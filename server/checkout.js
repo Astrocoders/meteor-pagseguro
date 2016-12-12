@@ -27,7 +27,7 @@ PagSeguro.createPurchase = ({reference, sender, items, shippingAddress}) => {
     getRequest(purchase:object){
       return PagSeguroUtils.serializeRequest(purchase);
     },
-    
+
     getCheckoutCode(purchase:object, onError){
       const response = HTTP.post(PagSeguro.config.API_URL, {
         params: purchase,

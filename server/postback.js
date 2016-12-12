@@ -31,13 +31,20 @@ Meteor.startup(function() {
       });
     } catch (e) {
       console.log('[PagSeguro] Postback error', e);
+      res.end(`[PagSeguro] Postback error: ${e} `);
+      return;
     }
 
     if (response.statusCode !== 200) {
       return;
+      res.writeHead(404, {'Content-Type': 'text/plain'});
+      res.end('Something went wrong');
     }
 
     const { transaction } = xml2js.parseStringSync(response.content);
     PagSeguro.config._notificationHandler(transaction);
+
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('okay');
   });
 });
